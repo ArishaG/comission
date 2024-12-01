@@ -1,1 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weekly Commission Report</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f4f8;
+            margin: 0;
+            padding: 20px;
+            color: #333;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: #fff;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+        }
+        p {
+            font-size: 1.2em;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Weekly Commission Report</h1>
+        <div id="output"></div>
+    </div>
+
+    <script>
+        let subtotal = 0;
+        let commissionRate = 0;
+        let salesAmount;
+        let username = prompt("Please enter your name:");
+        
+        do {
+            salesAmount = prompt("Enter sales amount (or type 'Done' to finish):");
+            
+            if (salesAmount === null) {
+                document.getElementById("output").innerHTML = "<p>You have canceled the input process. No sales recorded.</p>";
+                break;
+            } 
+            
+            if (salesAmount.toLowerCase() !== "done") {
+                let parsedAmount = parseFloat(salesAmount);
+                
+                if (!isNaN(parsedAmount) && parsedAmount >= 0) {
+                    subtotal += parsedAmount;
+                } else if (isNaN(parsedAmount) || parsedAmount < 0) {
+                    alert("Invalid input. Please enter a valid sales amount.");
+                }
+            }
+        } while (salesAmount.toLowerCase() !== "done");
+        
+        if (salesAmount !== null) {
+            if (subtotal > 0 && subtotal <= 499.99) {
+                commissionRate = 0.05;
+            } else if (subtotal >= 500 && subtotal <= 999.99) {
+                commissionRate = 0.10;
+            } else if (subtotal >= 1000) {
+                commissionRate = 0.15;
+            }
+            
+            let totalCommission = subtotal * commissionRate;
+            let totalEarnings = subtotal + totalCommission;
+            
+            document.getElementById("output").innerHTML = `
+                <p>Hello ${username}, Here is your Weekly Commission Report.</p>
+                <p>Your sales total is ${subtotal.toLocaleString("en-US", { style: "currency", currency: "USD" })}, 
+                so your commission rate is ${(commissionRate * 100).toFixed(2)}%.</p>
+                <p>Your total commission is ${totalCommission.toLocaleString("en-US", { style: "currency", currency: "USD" })}.</p>
+                <p>Your total earnings are ${totalEarnings.toLocaleString("en-US", { style: "currency", currency: "USD" })}.</p>
+            `;
+        }
+    </script>
+</body>
+</html>
 
